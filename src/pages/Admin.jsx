@@ -6,22 +6,26 @@ export default function Admin() {
   const [error, setError] = useState('');
 
   const fetchEntries = async () => {
-    setError('');
-    try {
-      const res = await fetch('http://localhost:5000/api/forms', {
-        headers: { 'x-admin-password': pwd } // send admin pwd
-      });
-      if (!res.ok) {
-        const data = await res.json();
-        throw new Error(data?.error || 'Unauthorized or failed');
-      }
+  setError('');
+  try {
+    const res = await fetch('http://localhost:5000/api/forms', {
+      headers: { 'x-admin-password': pwd } // send admin pwd
+    });
+
+    if (!res.ok) {
       const data = await res.json();
-      setEntries(data);
-    } catch (err) {
-      setError(err.message);
-      setEntries([]);
+      throw new Error(data?.error || 'Unauthorized or failed');
     }
-  };
+
+    const data = await res.json();
+    setEntries(data);
+    setPwd(''); // Clear password after success ✅
+    
+  } catch (err) {
+    setError(err.message);
+    setEntries([]);
+  }
+};
 
   const deleteEntry = async (id) => {
     if (!confirm('Delete this entry?')) return;
