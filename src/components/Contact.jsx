@@ -33,8 +33,9 @@ const Contact = () => {
   const validateForm = () => {
     const newErrors = {};
     if (!form.name) newErrors.name = 'Name is required';
-    if (!form.email) newErrors.email = 'Email is required';
-    if (!form.message) newErrors.message = 'Message is required';
+    if (!form.number) newErrors.epcName = 'Business name is required';
+    if (!form.number) newErrors.number = 'Phone number is required';
+   
     
     // Email format validation (basic)
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -77,8 +78,9 @@ const Contact = () => {
       // Reset form fields after successful submission
       setForm({
         name: '',
-        email: '',
-        message: '',
+        epcName: '',
+        number: '',
+        officeAddress: '',
       });
       setErrors({}); // Clear errors after successful submission
     })
@@ -95,7 +97,7 @@ const Contact = () => {
         variants={slideIn('left', 'tween', 0.2, 1)} 
         className="flex-[0.75] bg-black-100 p-8 rounded-2xl"
       >
-        <p className={styles.sectionSubText}>Hire me</p>
+        <p className={styles.sectionSubText}>Take your seat</p>
         <h3 className={styles.sectionHeadText}>Contact.</h3>
 
         <form 
@@ -105,7 +107,7 @@ const Contact = () => {
         >
           {/* Name input field */}
           <label className="flex flex-col">
-            <span className="text-white font-medium mb-4">Your Name</span>
+            <span className="text-white font-medium mb-4">Full Name</span>
             <input 
               type="text" 
               name="name" 
@@ -117,33 +119,45 @@ const Contact = () => {
             {errors.name && <span className="text-red-500 text-sm mt-2">{errors.name}</span>}
           </label>
 
-          {/* Email input field */}
           <label className="flex flex-col">
-            <span className="text-white font-medium mb-4">Your Email</span>
+            <span className="text-white font-medium mb-4">EPC Name</span>
             <input 
-              type="email" 
-              name="email" 
-              value={form.email} 
+              type="text" 
+              name="name" 
+              value={form.epcName} 
               onChange={handleChange} 
-              placeholder="Enter your email" 
+              placeholder="Enter your business name" 
               className="bg-tertiary py-4 px-6 placeholder:text-secondary text-white rounded-lg outline-none border-none font-medium"
             />
-            {errors.email && <span className="text-red-500 text-sm mt-2">{errors.email}</span>}
+            {errors.name && <span className="text-red-500 text-sm mt-2">{errors.epcName}</span>}
           </label>
 
-          {/* Message input field */}
           <label className="flex flex-col">
-            <span className="text-white font-medium mb-4">Your Message</span>
-            <textarea 
-              rows="7"
-              name="message" 
-              value={form.message} 
+            <span className="text-white font-medium mb-4">Phone number</span>
+            <input 
+              type="text" 
+              name="number" 
+              value={form.number} 
               onChange={handleChange} 
-              placeholder="Tell me something..." 
+              placeholder="Enter your phone number" 
               className="bg-tertiary py-4 px-6 placeholder:text-secondary text-white rounded-lg outline-none border-none font-medium"
             />
-            {errors.message && <span className="text-red-500 text-sm mt-2">{errors.message}</span>}
+            {errors.name && <span className="text-red-500 text-sm mt-2">{errors.number}</span>}
           </label>
+
+          <label className="flex flex-col">
+            <span className="text-white font-medium mb-4">Office Address</span>
+            <input
+              type="text"
+              name="officeAddress"
+              value={form.officeAddress}
+              onChange={handleChange}
+              placeholder="Enter your office address (optional)"
+              className="bg-tertiary py-4 px-6 placeholder:text-secondary text-white rounded-lg outline-none border-none font-medium"
+            />
+            {/* No error message here since it's optional */}
+          </label>
+
 
           {/* Submit button */}
           <button
