@@ -24,7 +24,7 @@ const App = () => {
                     to="/admin"
                     className="text-white underline hover:text-yellow-300"
                   >
-                    Go to Admin
+                  
                   </Link>
                 </div>
               </div>

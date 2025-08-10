@@ -38,43 +38,59 @@ export default function Admin() {
   };
 
   return (
-    <div className="p-6">
-      <h2 className="text-xl font-bold mb-4">Admin</h2>
+    <div className="p-6 mt-6 bg-primary">
+      <h2 className="text-center text-xl font-bold mb-4 mt-12">Admin</h2>
 
-      <div className="mb-4">
-        <input
-          type="password"
-          placeholder="Admin password"
-          value={pwd}
-          onChange={(e) => setPwd(e.target.value)}
-          className="border p-2 mr-2"
-        />
-        <button onClick={fetchEntries} className="bg-blue-600 text-white px-3 py-1 rounded">
-          Load entries
-        </button>
-        {error && <div className="text-red-500 mt-2">{error}</div>}
-      </div>
+      <div className="mb-4 flex flex-col sm:flex-row justify-center items-center gap-2">
+  <input
+    type="password"
+    placeholder="Admin password"
+    value={pwd}
+    onChange={(e) => setPwd(e.target.value)}
+    className="border p-2 rounded w-full sm:w-64"
+  />
+  <button
+    onClick={fetchEntries}
+    className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded w-full sm:w-64 transition"
+  >
+    Load entries
+  </button>
+  {error && <div className="text-red-500 mt-2 w-full text-center">{error}</div>}
+</div>
 
-      <table className="min-w-full bg-white">
-        <thead>
-          <tr>
-            <th>Name</th><th>EPC</th><th>Phone</th><th>Address</th><th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {entries.map(e => (
-            <tr key={e._id}>
-              <td>{e.name}</td>
-              <td>{e.epcName}</td>
-              <td>{e.number}</td>
-              <td>{e.officeAddress}</td>
-              <td>
-                <button onClick={() => deleteEntry(e._id)} className="bg-red-500 text-white px-2 py-1 rounded">Delete</button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+
+      <div className="overflow-x-auto">
+  <table className="min-w-full border border-gray-300 bg-white text-black">
+    <thead className="bg-gray-100">
+      <tr>
+        <th className="px-4 py-2 border border-gray-300 text-left">Name</th>
+        <th className="px-4 py-2 border border-gray-300 text-left">EPC</th>
+        <th className="px-4 py-2 border border-gray-300 text-left">Phone</th>
+        <th className="px-4 py-2 border border-gray-300 text-left">Address</th>
+        <th className="px-4 py-2 border border-gray-300 text-left">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {entries.map((e) => (
+        <tr key={e._id} className="hover:bg-gray-50">
+          <td className="px-4 py-2 border border-gray-300">{e.name}</td>
+          <td className="px-4 py-2 border border-gray-300">{e.epcName}</td>
+          <td className="px-4 py-2 border border-gray-300">{e.number}</td>
+          <td className="px-4 py-2 border border-gray-300">{e.officeAddress}</td>
+          <td className="px-4 py-2 border border-gray-300">
+            <button
+              onClick={() => deleteEntry(e._id)}
+              className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded transition"
+            >
+              Delete
+            </button>
+          </td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
+
     </div>
   );
 }
