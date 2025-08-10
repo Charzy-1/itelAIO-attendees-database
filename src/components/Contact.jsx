@@ -1,94 +1,68 @@
 import { useState, useRef } from "react";
 import { motion } from 'framer-motion';
 import { styles } from '../styles';
-import emailjs from '@emailjs/browser';
-
+import axios from "axios";
 import { SectionWrapper } from "../hoc";
 import { slideIn } from "../utils/motion";
 
 const Contact = () => {
-  // Reference to the form element
   const formRef = useRef();
-  
-  // State for managing form input fields
+
   const [form, setForm] = useState({
     name: '',
-    email: '',
-    message: '',
+    epcName: '',
+    number: '',
+    officeAddress: '',
   });
 
-  // State for managing validation errors
   const [errors, setErrors] = useState({});
-
-  // State to track loading state during form submission
   const [loading, setLoading] = useState(false);
 
-  // Handle input change for all form fields
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setForm({ ...form, [name]: value });
+    setForm(prev => ({ ...prev, [name]: value }));
   };
 
-  // Validate form fields
   const validateForm = () => {
     const newErrors = {};
     if (!form.name) newErrors.name = 'Name is required';
-    if (!form.number) newErrors.epcName = 'Business name is required';
+    if (!form.epcName) newErrors.epcName = 'Business name is required';
     if (!form.number) newErrors.number = 'Phone number is required';
-   
-    
-    // Email format validation (basic)
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (form.email && !emailPattern.test(form.email)) {
-      newErrors.email = 'Please enter a valid email address';
-    }
-    
     return newErrors;
   };
 
-  // Handle form submission
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     const validationErrors = validateForm();
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
-      return; // Stop form submission if there are validation errors
+      return;
     }
 
     setLoading(true);
-    
-    // EmailJS send method for sending email with the provided form data
-    emailjs.send(
-      'service_yxudmck',
-      'template_9qa1wca',
-      {
-        from_name: form.name,
-        to_name: 'Charles',
-        from_email: form.email,
-        to_email: 'charlesadiks@gmail.com',
-        message: form.message,
-      },
-      '0doGALnr-Fx0KSo2M'
-    )
-    .then(() => {
-      setLoading(false);
-      alert('Thank you. I will get back to you shortly.');
-      
-      // Reset form fields after successful submission
+    setErrors({});
+
+    try {
+      // Replace this with your own POST endpoint URL
+      const response = await axios.post('http://localhost:5000/api/forms', form);
+      console.log('Response:', response.data);
+
+      alert('Thank you. Your submission was successful.');
+
+      // Reset form
       setForm({
         name: '',
         epcName: '',
         number: '',
         officeAddress: '',
       });
-      setErrors({}); // Clear errors after successful submission
-    })
-    .catch((error) => {
-      setLoading(false);
-      console.log(error);
+    } catch (error) {
+      console.error(error);
       alert('Something went wrong. Please try again later.');
-    });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -105,7 +79,6 @@ const Contact = () => {
           onSubmit={handleSubmit}
           className="mt-12 flex flex-col gap-8"
         >
-          {/* Name input field */}
           <label className="flex flex-col">
             <span className="text-white font-medium mb-4">Full Name</span>
             <input 
@@ -123,13 +96,13 @@ const Contact = () => {
             <span className="text-white font-medium mb-4">EPC Name</span>
             <input 
               type="text" 
-              name="name" 
+              name="epcName" 
               value={form.epcName} 
               onChange={handleChange} 
               placeholder="Enter your business name" 
               className="bg-tertiary py-4 px-6 placeholder:text-secondary text-white rounded-lg outline-none border-none font-medium"
             />
-            {errors.name && <span className="text-red-500 text-sm mt-2">{errors.epcName}</span>}
+            {errors.epcName && <span className="text-red-500 text-sm mt-2">{errors.epcName}</span>}
           </label>
 
           <label className="flex flex-col">
@@ -142,7 +115,7 @@ const Contact = () => {
               placeholder="Enter your phone number" 
               className="bg-tertiary py-4 px-6 placeholder:text-secondary text-white rounded-lg outline-none border-none font-medium"
             />
-            {errors.name && <span className="text-red-500 text-sm mt-2">{errors.number}</span>}
+            {errors.number && <span className="text-red-500 text-sm mt-2">{errors.number}</span>}
           </label>
 
           <label className="flex flex-col">
@@ -155,26 +128,21 @@ const Contact = () => {
               placeholder="Enter your office address (optional)"
               className="bg-tertiary py-4 px-6 placeholder:text-secondary text-white rounded-lg outline-none border-none font-medium"
             />
-            {/* No error message here since it's optional */}
           </label>
 
-
-          {/* Submit button */}
           <button
             type="submit" 
             className="bg-tertiary py-3 px-8 outline-none w-fit text-white font-bold shadow-md shadow-primary rounded-xl"
           >
-        o    {loading ? 'Sending...' : 'Send'}
+            {loading ? 'Sending...' : 'Send'}
           </button>
         </form>
       </motion.div>
 
       <motion.div
         variants={slideIn('right', 'tween', 0.2, 1)}
-          className="xl:flex-1 xl:h-auto md:h-[650px] h-[450px] flex justify-center items-center"
-        >
-         
-
+        className="xl:flex-1 xl:h-auto md:h-[650px] h-[450px] flex justify-center items-center"
+      >
         <img
           src="/images/aio.png"
           alt="AIO"
@@ -182,8 +150,6 @@ const Contact = () => {
           loading="lazy"
         />
       </motion.div>
-
-
     </div>
   );
 };
