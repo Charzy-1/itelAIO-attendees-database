@@ -8,7 +8,7 @@ export default function Admin() {
   const fetchEntries = async () => {
   setError('');
   try {
-    const res = await fetch('${import.meta.env.VITE_API_URL}/api/forms', {
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/api/forms`, {
       headers: { 'x-admin-password': pwd } // send admin pwd
     });
 
