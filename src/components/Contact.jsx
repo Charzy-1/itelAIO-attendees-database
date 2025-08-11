@@ -45,7 +45,7 @@ const Contact = () => {
 
     try {
       // Replace this with your own POST endpoint URL
-      const response = await axios.post('https://aio-backend-theta.vercel.app/api/forms', form);
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/forms`, form);
       // console.log('Response:', response.data);
 
       alert('Thank you. Your submission was successful.');
