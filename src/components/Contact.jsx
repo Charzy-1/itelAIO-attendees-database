@@ -23,6 +23,7 @@ const Contact = () => {
     setForm(prev => ({ ...prev, [name]: value }));
   };
 
+  // validate the form
   const validateForm = () => {
     const newErrors = {};
     if (!form.name) newErrors.name = 'Name is required';
