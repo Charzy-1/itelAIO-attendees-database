@@ -45,6 +45,7 @@ const Contact = () => {
 
     try {
       // Replace this with your own POST endpoint URL
+      // eslint-disable-next-line no-unused-vars
       const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/forms`, form);
       // console.log('Response:', response.data);
 
