@@ -8,7 +8,7 @@ export default function Admin() {
   const fetchEntries = async () => {
   setError('');
   try {
-    const res = await fetch('http://localhost:5000/api/forms', {
+    const res = await fetch('${import.meta.env.VITE_API_URL}/api/forms', {
       headers: { 'x-admin-password': pwd } // send admin pwd
     });
 
@@ -30,7 +30,7 @@ export default function Admin() {
   const deleteEntry = async (id) => {
     if (!confirm('Delete this entry?')) return;
     try {
-      const res = await fetch(`http://localhost:5000/api/forms/${id}`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/forms/${id}`, {
         method: 'DELETE',
         headers: { 'x-admin-password': pwd }
       });
